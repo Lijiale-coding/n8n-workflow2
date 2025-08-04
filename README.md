@@ -44,17 +44,15 @@
   <em>Exemple de mail reçu et schéma du workflow n8n associé.</em>
 </div>
 
----
-
-### 3. Base d'activités d'étudiant à Pau  
-- Toutes les activités possibles selon la météo, durée, type et lieu sont maintenues dans un Google Sheet.
-- Utilisé dans l'agent AI pour adapter chaque recommandation du matin.
-
-<p align="center">
-  <img src="activites.jpg" alt="activites_sheet" width="600">
-</p>
+> **📋 Base d'activités d'étudiant à Pau**  
+> Toutes les activités sont maintenues dans un Google Sheet :  
+> météo idéale, durée, type, lieu, etc.  
+> Ce Sheet sert de base dynamique pour adapter chaque recommandation du matin à la météo et au planning.
+>
+> <img src="activites.jpg" alt="activites_sheet" width="600">
 
 ---
+
 
 ## 💡 Importer les workflows / How to import workflows
 
