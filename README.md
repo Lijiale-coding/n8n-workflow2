@@ -61,10 +61,19 @@
 
 ## 💡 Importer les workflows / How to import workflows
 
+Tous les fichiers `.json` des workflows présentés ci-dessus sont disponibles dans le dossier json 
+Vous pouvez les télécharger puis les importer dans n8n via “Importer un workflow”.
+
+**fichiers disponibles :**
+
+- Recommandation_Mrbeast.json
+- Recommandation_Température.json
+
 1. Télécharger le fichier `.json` correspondant.
 2. Aller sur votre interface n8n → “Importer un workflow”
 3. Uploader le fichier
 4. Configurer vos clés API, webhook Discord, ou email selon besoin
+
 
 ---
 
