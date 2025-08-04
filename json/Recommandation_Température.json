@@ -1,0 +1,245 @@
+{
+  "name": "Recommandation d'activité",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Role :\nTu es un assistant intelligent étudiant à Pau, capable d’utiliser les outils météo, activités, agenda et envoi de mail (\"SendMail\") pour recommander la meilleure activité \n\nTâche :\n- utilise les outils pour obtenir la météo du jour à Pau, la liste des activités potentielles, et les créneaux libres dans l’agenda.\n- Filtre les activités compatibles avec la météo et le planning.\n- Présente la météo en une phrase positive, puis affiche la liste des activités possibles, **chaque activité sur une nouvelle ligne avec un emoji approprié**.\n- Sélectionne la meilleure activité du jour, explique ton choix, puis termine par une phrase d’encouragement.\n-envoi de mail (\"SendMail\") pour recommander la meilleure activité by the time {{ $json['Readable time'] }}\n\n\nContraintes de mise en page :\n-Chaque activité de la liste doit être affichée sur une nouvelle ligne avec une puce (“•”) ou un tiret (“-”) et un emoji.\n\n-Il est formellement interdit d’afficher plusieurs activités sur la même ligne.\n\n-Le mail doit être généré au format HTML.  \n\n-Chaque activité de la liste doit apparaître sur une ligne séparée, sous forme d’élément `<li>` dans une balise `<ul>`, ou séparée par un `<br>`.  \n\n-N’utilise pas de balises `<html>` ni `<body>`, uniquement le contenu du mail à insérer dans Gmail.  \n- Ex :  \n  Bonjour !  \n  Aujourd’hui à Pau, le température est... \n   \n  Voici les activités possibles :  \n  • Balade au Parc Beaumont 🌳 : Profite d’une promenade relaxante.  \n  • Marché local 🛒 : Découvre les produits locaux.  \n  • Pique-nique étudiant 🧺 : Profite du parc avec tes amis.  \n   \n  Ma recommandation du jour : …  \n   \n  Bonne journée et amuse-toi bien ! 🌞\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        -48
+      ],
+      "id": "15a769e4-7626-49e5-80d3-ac786c0294b3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        -48
+      ],
+      "id": "df0e56b9-0404-421f-9027-98f6b7836abf",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "lijiale524@gmail.com",
+          "mode": "list",
+          "cachedResultName": "lijiale524@gmail.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        288
+      ],
+      "id": "05980dd8-9870-4f81-a029-432368d6f51b",
+      "name": "Get availability in a calendar in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "WVr98IrJtrpuCLGM",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "cityName": "Pau, FR",
+        "language": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Language', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        640,
+        288
+      ],
+      "id": "2b952bac-b982-4506-997d-bf4dd0ec1046",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "ssqglErGfQyJqa4p",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hXFcbMp9JaOVryEk34kzDAqmCH_g7-_BkuIiguf43Mo",
+          "mode": "list",
+          "cachedResultName": "activities",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hXFcbMp9JaOVryEk34kzDAqmCH_g7-_BkuIiguf43Mo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 857112459,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hXFcbMp9JaOVryEk34kzDAqmCH_g7-_BkuIiguf43Mo/edit#gid=857112459"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        304,
+        288
+      ],
+      "id": "d34d016f-5d86-4683-849e-0700d8705816",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nBAfbEvWTv5UwjYO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        288
+      ],
+      "id": "247fa7b0-f1e3-4c19-981d-648e26837bea",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "fXkWBSe7GguLj79M",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "lijiale524@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        288
+      ],
+      "id": "0f96188a-e53b-4ece-920e-1bdf3e717adb",
+      "name": "Send a message in Gmail",
+      "webhookId": "e6e27f51-5691-41d2-97ef-04d6ad18c2bf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "kZlGUn27MMpWnJEU",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get availability in a calendar in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fa9ef4ec-5062-4792-bb94-8e45e83ac2c3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "545002ffa7fea14ba26873e83e768cc8cc6802223f4e15de1c063e6f2dac6e25"
+  },
+  "id": "3oPFryq7ncKgIgi9",
+  "tags": []
+}

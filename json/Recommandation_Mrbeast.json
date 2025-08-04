@@ -1,0 +1,302 @@
+{
+  "name": "recommendation of the mrbreast video everyday",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ 'https://www.youtube.com/feeds/videos.xml?channel_id=' + $json['the url of mrbeast'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        -816
+      ],
+      "id": "96e6abd7-cda6-4a8d-ba92-74fa9c89c6c3",
+      "name": "pull the 15 recent video of mrbeast"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "05195830-8383-4e54-93cc-b6de8cbbfcda",
+              "leftValue": "={{ $json.pubDate }}",
+              "rightValue": "={{ (new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)).toISOString() }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            },
+            {
+              "id": "8fe53789-a6a0-46f8-8b6f-159d9f18493f",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -16,
+        -816
+      ],
+      "id": "a6e8ab65-b60d-4978-a542-95ac5e0a670f",
+      "name": "make sure it's update from last week"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&&id={{ $json.id.split(':').pop() }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyCPT4LtuL9oQKU_XOSZlbjfmPIkc2IGG4w"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        -816
+      ],
+      "id": "c124e60e-386f-4676-b23f-d2b562854e11",
+      "name": "find the information of the video by youtube api"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2cda90d1-d0d5-4c43-834b-32e347cf4da8",
+              "name": "the url of mrbeast",
+              "value": "UCX6OQ3DkcsbYNE6H8uQQuVA",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -464,
+        -816
+      ],
+      "id": "7ac35746-b229-4c1a-bb38-9e99431835ea",
+      "name": "the url of mrbeast"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        832,
+        -816
+      ],
+      "id": "22a220fa-f11e-4b35-928e-e58f46116f30",
+      "name": "send the recommendation to the server",
+      "webhookId": "475fb744-2af4-42c3-9d37-0f6bef9d1f6c",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "1LiCiMaaEVE4obJl",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        -592
+      ],
+      "id": "a7222a42-7362-46ee-958b-ce1c3317d78a",
+      "name": "OpenAI Chat 4.1 mini",
+      "credentials": {
+        "openAiApi": {
+          "id": "G6I2jCyKIXoKCUVB",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=according to these message give me a advise to watch;u need to give me the link to watch it,let me know it's a video or shot and simple advise to watch, date of public:{{ $json.items[0].snippet.publishedAt }} the title of the video:{{ $json.items[0].snippet.title }}  link:{{ $('make sure it\\'s update from last week').item.json.link }}\nif the description is empty the type of this video is a shot, decription:{{ $json.items[0].snippet.description }} ",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        432,
+        -816
+      ],
+      "id": "7d52eb3a-c2c7-4a75-88a5-6c541a123235",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -688,
+        -912
+      ],
+      "id": "ef5b1783-a07d-4b23-86dd-b9a56410594d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        -704
+      ],
+      "id": "041c5525-0b9a-4961-bd74-e609e27d3360",
+      "name": "Error Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "pull the 15 recent video of mrbeast": {
+      "main": [
+        [
+          {
+            "node": "make sure it's update from last week",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "make sure it's update from last week": {
+      "main": [
+        [
+          {
+            "node": "find the information of the video by youtube api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find the information of the video by youtube api": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "the url of mrbeast": {
+      "main": [
+        [
+          {
+            "node": "pull the 15 recent video of mrbeast",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat 4.1 mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "send the recommendation to the server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "the url of mrbeast",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "the url of mrbeast",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6f61300d-6713-4c8f-9051-75e35f41672e",
+  "meta": {
+    "templateId": "self-building-ai-agent",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "545002ffa7fea14ba26873e83e768cc8cc6802223f4e15de1c063e6f2dac6e25"
+  },
+  "id": "HRbSw7CyxCEs2pLH",
+  "tags": []
+}
