@@ -61,7 +61,7 @@
 
 ## 💡 Importer les workflows / How to import workflows
 
-Tous les fichiers des workflows présentés ci-dessus sont disponibles dans le dossier json,
+Tous les fichiers des workflows présentés ci-dessus sont disponibles dans le dossier json.
 Vous pouvez les télécharger puis les importer dans n8n via “Importer un workflow”.
 
 **fichiers disponibles :**
