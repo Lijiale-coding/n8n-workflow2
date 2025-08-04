@@ -28,6 +28,11 @@
   <img src="Gh6bC7Xx8GWmYsAxJmtEpF.png" alt="mrbeast_workflow" width="500">
 </p>
 
+> **Exemple de message envoyé automatiquement sur Discord :**
+>
+> <img src="discord_screenshot.jpg" alt="Résultat Discord" width="450">
+
+
 ---
 
 ### 2. Assistant personnel Google Sheet → Email  
