@@ -11,10 +11,7 @@
   <img src="la situation de workespace n8n.jpg" alt="n8n overview" width="600"><br>
   <em>Vue d'ensemble de mon workspace n8n avec les workflows actifs.</em>
 </p>
-
 ---
-
-## 🌟 Projets inclus / Included Projects
 
 ### 1. Recommandation automatique de vidéos MrBeast sur Discord  
 **Automated MrBeast YouTube video recommendations sent to Discord**
@@ -24,10 +21,16 @@
 - Envoi automatique sur un serveur Discord chaque semaine
 
 <p align="center">
-  <img src="Gh6bC7Xx8GWmYsAxJmtEpF.png" alt="mrbeast_workflow" width="500">
+  <img src="Gh6bC7Xx8GWmYsAxJmtEpF.png" alt="mrbeast_workflow" width="500"><br>
+  <em>Schéma du workflow n8n.</em>
 </p>
 
+> **Exemple de message envoyé automatiquement sur Discord :**
+>
+> <img src="discord_screenshot.jpg" alt="Résultat Discord" width="450">
+
 ---
+
 
 ### 2. Assistant personnel Google Sheet → Email  
 **Personal planner assistant: Google Sheet to daily email**
