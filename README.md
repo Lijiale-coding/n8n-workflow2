@@ -9,7 +9,7 @@
 ## 🖼️ **Présentation visuelle — Screenshots**
 
 <p align="center">
-  <img src="la situation de workespace n8n.jpg" alt="n8n overview" width="600"><br>
+  <img src="workespace_n8n.jpg" alt="n8n_overview" width="600"><br>
   <em>Vue d'ensemble de mon workspace n8n avec les workflows actifs.</em>
 </p>
 
@@ -25,7 +25,7 @@
 - Envoi automatique sur un serveur Discord chaque semaine
 
 <p align="center">
-  <img src="Gh6bC7Xx8GWmYsAxJmtEpF.png" alt="mrbeast_workflow" width="500">
+  <img src="workflow1.jpg" alt="mrbeast_workflow" width="500">
 </p>
 
 > **Exemple de message envoyé automatiquement sur Discord :**
@@ -44,8 +44,8 @@
 - Envoi par email chaque matin avec résumé personnalisé
 
 <div align="center">
-  <img src="mail resultat.jpg" alt="Résultat mail" width="400">&nbsp;&nbsp;
-  <img src="b5d0d9c3-89d6-4516-afd7-cf8ec1b96a11.png" alt="workflow_n8n" width="400"><br>
+  <img src="mail_resultat.jpg" alt="Résultat mail" width="400">&nbsp;&nbsp;
+  <img src="workflow2.jpg" alt="workflow_n8n" width="400"><br>
   <em>Exemple de mail reçu et schéma du workflow n8n associé.</em>
 </div>
 
