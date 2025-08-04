@@ -45,7 +45,7 @@
 
 <div align="center">
   <img src="mail_resultat.jpg" alt="Résultat mail" width="700">&nbsp;&nbsp;
-  <img src="workflow2.jpg" alt="workflow_n8n" width="600"><br>
+  <img src="workflow2.jpg" alt="workflow_n8n" width="700"><br>
   <em>Exemple de mail reçu et schéma du workflow n8n associé.</em>
 </div>
 
